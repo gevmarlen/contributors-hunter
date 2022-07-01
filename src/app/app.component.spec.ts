@@ -1,35 +1,52 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { contributors } from '../test/services/api.mock';
 import { AppComponent } from './app.component';
+import { CartService } from './services/cart.service';
+import { LoaderService } from './services/loader.service';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let cartService: CartService;
+  let loaderService: LoaderService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+      declarations: [ AppComponent ],
+      providers: [
+        CartService,
+        LoaderService,
+      ]
+    })
+      .compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'contributors_hunter'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('contributors_hunter');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('contributors_hunter app is running!');
+
+    cartService = TestBed.inject(CartService);
+    loaderService = TestBed.inject(LoaderService);
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should show loader while loading', () => {
+    expect(fixture.debugElement.query(By.css('.loader'))).toBeFalsy();
+    loaderService.setLoader(true)
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.loader'))).toBeTruthy();
+  });
+
+  it('should show correct number of cart elements', () => {
+    const cartButton = fixture.debugElement.query(By.css('.cart-button'));
+    expect(cartButton.nativeElement.textContent.trim()).toContain('cart: 0');
+    cartService.addToCart(contributors[0]);
+    fixture.detectChanges()
+    expect(cartButton.nativeElement.textContent.trim()).toContain('cart: 1');
   });
 });
