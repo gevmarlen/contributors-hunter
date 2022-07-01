@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { Repository } from '../core/models/github-api';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DashboardService {
-  public getRepositories(): Observable<Repository[]> {
-    return EMPTY;
+  private repositories: ReplaySubject<Repository[] | null> = new ReplaySubject<Repository[] | null>();
+
+  public getRepositories(): Observable<Repository[] | null> {
+    return this.repositories.asObservable();
   }
 
-  public setRepositories(repositories: Repository[]): void {}
+  public setRepositories(repositories: Repository[] | null): void {
+    this.repositories.next(repositories);
+  }
 }

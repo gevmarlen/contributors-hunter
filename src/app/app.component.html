@@ -1,1 +1,8 @@
-<p>app works!</p>
+<mat-progress-bar class="progress-bar" *ngIf="loader" mode="indeterminate"></mat-progress-bar>
+<header class="app-header">
+  <a class="cart-button" routerLink="cart" mat-raised-button color="primary">
+    <mat-icon>shopping_cart</mat-icon>
+    Cart: {{ cartElements }}
+  </a>
+</header>
+<router-outlet></router-outlet>

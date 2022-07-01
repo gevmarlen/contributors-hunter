@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+.contributor {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  &__wrapper {
+    display: flex;
+    width: max-content;
+    align-items: center;
+  }
+
+  &__avatar {
+    width: 2rem;
+    margin-right: 1rem;
+  }
+}

@@ -1,8 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
-import { ApiService } from 'src/app/core/api/api.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { of, throwError } from 'rxjs';
 import { organizations, repositories } from '../../../test/services/api.mock';
+import { ApiService } from '../../core/api/api.service';
 
 import { DashboardComponent } from './dashboard.component';
 
@@ -14,11 +20,20 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DashboardComponent ],
+      imports: [
+        MatTableModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+      ],
       providers: [
         ApiService,
       ]
     })
-      .compileComponents();
+    .compileComponents();
   });
 
   beforeEach(() => {
@@ -34,7 +49,7 @@ describe('DashboardComponent', () => {
   });
 
   it('should show "Organization not found" message', () => {
-    jest.spyOn(apiService, 'getOrganization').mockImplementation(() => of([]));
+    jest.spyOn(apiService, 'getOrganization').mockImplementation(() => throwError(() => new Error()));
     component.onSubmit();
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('.error-message'));
@@ -51,11 +66,11 @@ describe('DashboardComponent', () => {
   });
 
   it('should show repository list', () => {
-    expect(fixture.debugElement.nativeElement.querySelectorAll('.list-item').length).toBe(0);
+    expect(fixture.debugElement.nativeElement.querySelectorAll('.mat-row').length).toBe(0);
     jest.spyOn(apiService, 'getOrganization').mockImplementation(() => of(organizations));
     jest.spyOn(apiService, 'getOrganizationRepositories').mockImplementation(() => of(repositories));
     component.onSubmit();
     fixture.detectChanges();
-    expect(fixture.debugElement.nativeElement.querySelectorAll('.list-item').length).toBe(3);
+    expect(fixture.debugElement.nativeElement.querySelectorAll('.mat-row').length).toBe(3);
   });
 });

@@ -1,1 +1,15 @@
-<p>cart works!</p>
+<a class="back-button" mat-raised-button routerLink="/">Back</a>
+<table mat-table [dataSource]="cardElements" class="card-list">
+  <ng-container matColumnDef="login">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.login}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="contributions">
+    <th mat-header-cell *matHeaderCellDef> Contributions </th>
+    <td mat-cell *matCellDef="let element"> {{element.contributions}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="cardColumns"></tr>
+  <tr [routerLink]="row.full_name" mat-row *matRowDef="let row; columns: cardColumns;"></tr>
+</table>

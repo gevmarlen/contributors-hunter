@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { cartItems } from '../../../test/services/cart.mock';
 import { CartService } from '../../services/cart.service';
 
@@ -12,11 +16,12 @@ describe('CartComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ CartComponent ],
+      imports: [MatTableModule, MatButtonModule, NoopAnimationsModule, RouterTestingModule],
       providers: [
         CartService,
       ]
     })
-      .compileComponents();
+    .compileComponents();
   });
 
   beforeEach(() => {
@@ -32,11 +37,11 @@ describe('CartComponent', () => {
   });
 
   it('should show cart items', () => {
-    expect(fixture.debugElement.nativeElement.querySelectorAll('.cart-item').length).toBe(0);
+    expect(fixture.debugElement.nativeElement.querySelectorAll('.mat-row').length).toBe(0);
     cartItems.forEach(item => {
       cartService.addToCart(item);
     });
     fixture.detectChanges();
-    expect(fixture.debugElement.nativeElement.querySelectorAll('.cart-item').length).toBe(3);
+    expect(fixture.debugElement.nativeElement.querySelectorAll('.mat-row').length).toBe(3);
   });
 });

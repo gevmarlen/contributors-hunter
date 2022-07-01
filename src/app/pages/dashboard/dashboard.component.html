@@ -1,1 +1,26 @@
-<p>dashboard works!</p>
+<form (ngSubmit)="onSubmit()" class="search-form" [formGroup]="form">
+  <mat-form-field appearance="fill">
+    <mat-label>Organization</mat-label>
+    <input matInput placeholder="Name" formControlName="organizationName">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Search</button>
+</form>
+
+<table *ngIf="!errorMessage && repositories; else error" mat-table [dataSource]="repositories" class="repo-list">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="contributors_url">
+    <th mat-header-cell *matHeaderCellDef> Url </th>
+    <td mat-cell *matCellDef="let element"> {{element.contributors_url}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="repositoryColumns"></tr>
+  <tr [routerLink]="row.full_name" mat-row *matRowDef="let row; columns: repositoryColumns;"></tr>
+</table>
+
+<ng-template #error>
+  <div class="error-message">{{ errorMessage }}</div>
+</ng-template>

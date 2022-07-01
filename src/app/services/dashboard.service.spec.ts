@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { repositories } from '../../test/services/api.mock';
-
 import { DashboardService } from './dashboard.service';
 
 describe('DashboardService', () => {

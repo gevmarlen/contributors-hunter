@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+.search-form {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.repo-list {
+  width: 100%;
+}

@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { contributors } from '../../../test/services/api.mock';
 import { ApiService } from '../../core/api/api.service';
 import { CartService } from '../../services/cart.service';
-
 import { RepositoryComponent } from './repository.component';
 
 describe('RepositoryComponent', () => {
@@ -17,10 +19,11 @@ describe('RepositoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ RepositoryComponent ],
+      imports: [MatListModule, MatButtonModule, NoopAnimationsModule],
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { params: convertToParamMap({ repo: 'test/micro' })}}
+          useValue: { snapshot: { params: convertToParamMap({ org: 'micro', repo: 'micro' })}}
         },
         MockProvider(ApiService, {
           getContributors: () => of(contributors),
@@ -30,7 +33,7 @@ describe('RepositoryComponent', () => {
         })
       ]
     })
-      .compileComponents();
+    .compileComponents();
   });
 
   beforeEach(  () => {
@@ -50,7 +53,7 @@ describe('RepositoryComponent', () => {
   });
 
   it('should show contributors list', () => {
-    expect(fixture.debugElement.query(By.css('.contributor'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.contributor__name'))).toBeTruthy();
   });
 
   it('should disable "Add to cart" button if contributor already in cart', () => {

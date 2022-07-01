@@ -1,1 +1,25 @@
-<p>repository works!</p>
+<a class="back-button" mat-raised-button routerLink="/">Back</a>
+<mat-list>
+  <mat-list-item *ngFor="let contributor of contributors">
+    <div class="contributor">
+      <div class="contributor__wrapper">
+        <img
+          class="contributor__avatar"
+          [src]="contributor.avatar_url"
+        >
+        <div class="contributor__name">{{ contributor.login }}</div>
+      </div>
+      <button
+        *ngIf="availableToAdd(contributor); else disabled"
+        (click)="addToCart(contributor)"
+        mat-raised-button
+        color="primary"
+      >
+        Add to cart
+      </button>
+      <ng-template #disabled>
+        <button mat-raised-button color="primary" disabled>Added</button>
+      </ng-template>
+    </div>
+  </mat-list-item>
+</mat-list>
