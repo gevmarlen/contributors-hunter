@@ -26,7 +26,7 @@ export class OctokitService {
   public request<R extends Route, T extends any>(
     route: keyof Endpoints | R,
     options?: R extends keyof Endpoints ? Endpoints[R]["parameters"] & RequestParameters : RequestParameters
-  ): Observable<any> {
+  ): Observable<T> {
     this.loaderService.setLoader(true);
 
     return from(this.octokit.request(route, options))
